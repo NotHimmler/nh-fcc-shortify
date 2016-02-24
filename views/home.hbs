@@ -1,1 +1,15 @@
-<h1>nh-fcc-shortify</h1>
+<link rel='stylesheet' href="../styles/home.css">
+<div class="container-fluid">
+    <h1>nh-fcc-shortify</h1>
+    <blockquote>
+        This is a micro-service API built as part of FreeCodeCamp's curriculum.<br>
+        Passing a url to the <code>/shorten</code> path of this site will give back a JSON object with a "shortened" URL.<br>
+        URLs passed must be of the format <code>http://wwww.example.com/anything-here</code><br>
+        Using the URL that was returned will direct you to the site that was put in.<br>
+        Passing an invalid URL will return a JSON object with an error. 
+    </blockquote>
+    <h2>Example Request</h2>
+    <code><a href="http://nh-fcc-shortify.herokuapp.com/shorten/http://www.facebook.com" target="_blank">http://nh-fcc-shortify.herokuapp.com/shorten/http://www.facebook.com</a></code>
+    <h3>Output</h3>
+    <code>{ "url":"http://nh-fcc-shortify.herokuapp.com/3"}</code>
+</div>
