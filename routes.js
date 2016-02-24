@@ -11,7 +11,7 @@ module.exports = function(app){
            if(err) res.send(JSON.stringify({url:null}));
            if(results.length === 0) res.send(JSON.stringify({url:null}));
            if(results.length > 0){
-               res.send(JSON.stringify({url:results[0].address}))
+               res.redirect(results[0].address);
            }
         });
     });
