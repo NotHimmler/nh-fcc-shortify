@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var path = require('path')
+var credentials = require('./credentials.js');
 
 //handlebars config
 var hbs = require('express-handlebars').create({
@@ -12,6 +13,9 @@ app.engine('.hbs', hbs.engine);
 app.set('views', path.join(__dirname+"/views"));
 app.set('view engine','.hbs');
 app.use(express.static(__dirname + "/public"));
+
+//mongoose config
+mongoose.connect(credentials.mongo.development.connectionString, {server : {keepAlive:1,}});
 
 app.set('port', process.env.PORT || 5000);
 
