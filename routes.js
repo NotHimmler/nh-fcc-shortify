@@ -8,8 +8,8 @@ module.exports = function(app){
     
     app.get('/:id', function(req, res){
         Shortener.find({id: req.params.id}, function(err, results){
-           if(err) res.send(JSON.stringify({url:null}));
-           if(results.length === 0) res.send(JSON.stringify({url:null}));
+           if(err) return res.redirect(500, 'Database Error');
+           if(results.length === 0) return res.send(JSON.stringify({url:null}));
            if(results.length > 0){
                res.redirect(results[0].address);
            }
@@ -20,12 +20,11 @@ module.exports = function(app){
        //Check if valid url
        var regex = /(http\:\/\/www.\w+\.com?\/?\w+)/;
        if (req.params['0'].match(regex)){
-           Shortener.find({url:req.params['0']}, function(err, results){
-               if(err) res.send(JSON.stringify({url:null}));
+           Shortener.find({address:req.params['0']}, function(err, results){
+               if(err) return res.redirect(500, 'Database error');
                if(results.length === 0){
                    Shortener.find(function(err, result){
                        var newId = result.length+1;
-                       console.log(newId);
                        var shortened = new Shortener({address: req.params['0'], id: newId, date: new Date()});
                         shortened.save(function(err){
                             if(err) return res.redirect(500, 'Database error');
@@ -33,7 +32,7 @@ module.exports = function(app){
                         });
                    })
                } else {
-                   res.send(JSON.stringify({url:results[0].id}));
+                   res.send(JSON.stringify({url:"http://nh-fcc-shortify.herokuapp.com/"+results[0].id}));
                }
            })
        } else {
