@@ -1,4 +1,45 @@
+
+.body {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
 .container-fluid {
     width:50%;
     position:relative;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.code {
+    word-wrap:break-word;
+}
+
+@media only screen and (max-width: 600px){
+    body {
+        width:100%;
+    }
+    .container-fluid {
+        width: 100%;
+        margin-left:0px;
+        margin-right:0px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    
+    blockquote {
+        font-size:0.75em;
+    }
+    
+    code {
+        font-size:0.75em;
+    }
+}
+
+@media only screen and (min-width:601px){
+    .container-fluid {
+        max-width:600px;
+        margin-left:auto;
+        margin-right:auto;
+    }
 }
