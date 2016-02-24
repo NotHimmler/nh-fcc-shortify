@@ -18,7 +18,7 @@ module.exports = function(app){
     
     app.get('/shorten/*', function(req, res){
        //Check if valid url
-       var regex = /(http\:\/\/www.\w+\.com?\/?\w+)/;
+       var regex = /(http\:\/{2}w{3}.\w+\.co(m|\.(uk))(\.(au))?(\/?).*)/;
        if (req.params['0'].match(regex)){
            Shortener.find({address:req.params['0']}, function(err, results){
                if(err) return res.redirect(500, 'Database error');

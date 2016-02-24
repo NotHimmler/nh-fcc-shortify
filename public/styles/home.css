@@ -9,16 +9,29 @@
     position:relative;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
+    height:100%;
 }
 
 .code {
     word-wrap:break-word;
 }
 
+.main {
+    position:relative;
+    margin-bottom:20px;
+}
+
+.contact {
+    width:100%;
+    text-align:center;
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    background-color:white;
+    padding-bottom:5px;
+}
+
 @media only screen and (max-width: 600px){
-    body {
-        width:100%;
-    }
     .container-fluid {
         width: 100%;
         margin-left:0px;
