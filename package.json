@@ -1,0 +1,23 @@
+{
+  "name": "nh-fcc-shortify",
+  "version": "0.0.0",
+  "description": "Express app to shorten URLs",
+  "main": "shortify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NotHimmler/nh-fcc-shortify.git"
+  },
+  "author": "Heinrich Malan",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/NotHimmler/nh-fcc-shortify/issues"
+  },
+  "dependencies": {
+    "mongoose": "~4.4.4",
+    "express": "~4.13.4",
+    "express-handlebars": "~3.0.0"
+  }
+}
