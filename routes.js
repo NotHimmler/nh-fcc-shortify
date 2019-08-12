@@ -83,7 +83,7 @@ module.exports = function(app){
                console.log(err);
                res.send({error:"Invalid URL"})
             });
-        else if (url.substr(0,5) === "https") {
+        } else if (url.substr(0,5) === "https") {
             https.get(url, function(http_res){
                 status = String(http_res.statusCode);
             }).on('error', function(err){
