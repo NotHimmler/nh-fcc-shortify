@@ -76,14 +76,14 @@ module.exports = function(app){
         var status = "404";
         var badStatusRegex = /(4|5)\d{2}/;
         
-        if (url.substr(0,4) === "http") {
+        if (url.substr(0,7) === "http://") {
             http.get(url, function(http_res){
                 status = String(http_res.statusCode);
             }).on('error', function(err){
                console.log(err);
                res.send({error:"Invalid URL"})
             });
-        } else if (url.substr(0,5) === "https") {
+        } else if (url.substr(0,8) === "https://") {
             https.get(url, function(http_res){
                 status = String(http_res.statusCode);
             }).on('error', function(err){
