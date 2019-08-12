@@ -1,6 +1,7 @@
 var fs = require('fs');
 var Shortener = require('./models/Shortener.js');
 var http = require('http');
+var https = require('https');
 
 module.exports = function(app){
     app.get('/', function(req, res){
@@ -71,18 +72,32 @@ module.exports = function(app){
     }
     
     function testUrlWorking(url, res, callback){
-        http.get(url, function(http_res){
-                var status = String(http_res.statusCode);
-                var badStatusRegex = /(4|5)\d{2}/;
-                
-                if(!status.match(badStatusRegex)){
-                    callback({valid:true,status:status});
-                } else {
-                    callback({valid:false,status:status});
-                }
+        
+        var status = String(http_res.statusCode);
+        var badStatusRegex = /(4|5)\d{2}/;
+        
+        if (url.substr(0,4) === "http") {
+            http.get(url, function(http_res){
+                status = String(http_res.statusCode);
             }).on('error', function(err){
                console.log(err);
                res.send({error:"Invalid URL"})
             });
+        else if (url.substr(0,5) === "https") {
+            https.get(url, function(http_res){
+                status = String(http_res.statusCode);
+            }).on('error', function(err){
+               console.log(err);
+               res.send({error:"Invalid URL"})
+            });
+        } else { 
+          status = "500";   
+        }
+            
+        if(!status.match(badStatusRegex)){
+            callback({valid:true,status:status});
+        } else {
+            callback({valid:false,status:status});
+        }
     }
 }
