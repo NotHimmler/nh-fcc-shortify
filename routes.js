@@ -73,7 +73,7 @@ module.exports = function(app){
     
     function testUrlWorking(url, res, callback){
         
-        var status = String(http_res.statusCode);
+        var status = "404";
         var badStatusRegex = /(4|5)\d{2}/;
         
         if (url.substr(0,4) === "http") {
@@ -90,8 +90,6 @@ module.exports = function(app){
                console.log(err);
                res.send({error:"Invalid URL"})
             });
-        } else { 
-          status = "500";   
         }
             
         if(!status.match(badStatusRegex)){
