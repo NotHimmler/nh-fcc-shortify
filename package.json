@@ -4,6 +4,7 @@
   "description": "Express app to shorten URLs",
   "main": "shortify.js",
   "scripts": {
+    "dev": "DEV=true nodemon shortify.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

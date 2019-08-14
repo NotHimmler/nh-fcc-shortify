@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var path = require('path')
-var credentials = require('./credentials.js');
 
 //handlebars config
 var hbs = require('express-handlebars').create({
@@ -15,7 +14,17 @@ app.set('view engine','.hbs');
 app.use(express.static(__dirname + "/public"));
 
 //mongoose config
-mongoose.connect(credentials.mongo.development.connectionString, {server : {keepAlive:1,}});
+let connectionString = null;
+if(process.env.DEV === "true") {
+    var credentials = require('./credentials.js');
+    connectionString = credentials.mongo.development.connectionString;
+} else {
+    var user = process.env.MONGO_USER;
+    var pass = process.env.MONGO_PASS;
+    connectionString = `mongodb://${user}:${pass}@ds058548.mlab.com:58548/shortify`;
+}
+
+mongoose.connect(connectionString, {server : {keepAlive:1,}});
 
 app.set('port', process.env.PORT || 5000);
 
