@@ -24,33 +24,18 @@ module.exports = function(app){
         if(testUrlSyntax(url)){
             testUrlWorking(url,res, function(result){
                 if(result.valid){
-                    console.log("valid URL: "+url+" - Status code: "+result.status);
-                    Shortener.find({address:req.params['0']}, function(err, results){
-                        if(err) return res.redirect(500, 'Database error');
-                        if(results.length === 0){
-                            Shortener.find(function(err, result){
-                                var newId = result.length+1;
-                                var shortened = new Shortener({address: req.params['0'], id: newId, date: new Date()});
-                                    shortened.save(function(err){
-                                        if(err) return res.redirect(500, 'Database error');
-                                        res.send(JSON.stringify({url:"http://nh-fcc-shortify.herokuapp.com/"+newId}));
-                                    });
-                            })
+                    Shortener.find({address:req.params['0']})
+                    .then(results => {
+                        if(results.length === 0 || results[0].id === undefined){
+                            createNewShortenedUrl(req, res, url);
                         } else {
-                            if(results[0].id === undefined){
-                                Shortener.find(function(err, result){
-                                    var newId = result.length+1;
-                                    var shortened = new Shortener({address: req.params['0'], id: newId, date: new Date()});
-                                        shortened.save({upsert:true},function(err){
-                                            if(err) return res.redirect(500, 'Database error');
-                                            res.send(JSON.stringify({url:"http://nh-fcc-shortify.herokuapp.com/"+newId}));
-                                        });
-                                })
-                            }else{
-                                res.send(JSON.stringify({url:"http://nh-fcc-shortify.herokuapp.com/"+results[0].id}));    
-                            }
+                            res.send(JSON.stringify({url:"http://nh-fcc-shortify.herokuapp.com/"+results[0].id}));    
                         }
-                    });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        return res.redirect(500, 'Database error');
+                    })
                 } else {
                     console.log("Invalid URL: "+url+" - Status code: "+result.status);
                     res.send(JSON.stringify({error:'Invalid url - Status code: '+result.status}));
@@ -70,15 +55,26 @@ module.exports = function(app){
             return false;
         }
     }
+
+    function checkStatus(status, callback) {  
+        
+        var badStatusRegex = /(4|5)\d{2}/;
+
+        if(!status.match(badStatusRegex)){
+            callback({valid:true,status:status});
+        } else {
+            callback({valid:false,status:status});
+        }
+    }
     
     function testUrlWorking(url, res, callback){
         
         var status = "404";
-        var badStatusRegex = /(4|5)\d{2}/;
         
         if (url.substr(0,7) === "http://") {
             http.get(url, function(http_res){
                 status = String(http_res.statusCode);
+                checkStatus(status, callback);
             }).on('error', function(err){
                console.log(err);
                res.send({error:"Invalid URL"})
@@ -86,16 +82,22 @@ module.exports = function(app){
         } else if (url.substr(0,8) === "https://") {
             https.get(url, function(http_res){
                 status = String(http_res.statusCode);
+                checkStatus(status, callback);
             }).on('error', function(err){
                console.log(err);
                res.send({error:"Invalid URL"})
             });
         }
-            
-        if(!status.match(badStatusRegex)){
-            callback({valid:true,status:status});
-        } else {
-            callback({valid:false,status:status});
-        }
     }
+}
+function createNewShortenedUrl(req, res, url) {
+    Shortener.find(function (err, result) {
+        var newId = result.length + 1;
+        var shortened = new Shortener({ address: url, id: newId, date: new Date() });
+        shortened.save({upsert: true}, function (err) {
+            if (err)
+                return res.redirect(500, 'Database error');
+            res.send(JSON.stringify({ url: "http://nh-fcc-shortify.herokuapp.com/" + newId }));
+        });
+    });
 }
