@@ -17,7 +17,7 @@
     "url": "https://github.com/NotHimmler/nh-fcc-shortify/issues"
   },
   "dependencies": {
-    "mongoose": "~4.4.4",
+    "mongoose": "~5.7.5",
     "express": "~4.13.4",
     "express-handlebars": "~3.0.0"
   }
