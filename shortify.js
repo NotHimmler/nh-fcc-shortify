@@ -21,7 +21,7 @@ if(process.env.DEV === "true") {
 } else {
     var user = process.env.MONGO_USER;
     var pass = process.env.MONGO_PASS;
-    connectionString = `mongodb://${user}:${pass}@ds058548.mlab.com:58548/shortify`;
+    connectionString = `mongodb+srv://${user}:${pass}@shortify.hvebg.mongodb.net/shortify?retryWrites=true&w=majority`;
 }
 
 mongoose.connect(connectionString, {server : {keepAlive:1,}});
